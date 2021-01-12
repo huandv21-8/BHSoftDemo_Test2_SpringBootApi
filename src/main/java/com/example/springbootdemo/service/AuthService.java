@@ -92,6 +92,7 @@ public class AuthService {
 
         // tạo token cho user login
         String token = jwtProvider.generateToken(authenticate);
+
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())

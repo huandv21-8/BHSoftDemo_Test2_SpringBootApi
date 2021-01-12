@@ -25,23 +25,20 @@ public class CommentService {
     private final UserRepository userRepository;
     private final AuthService authService;
     private final CommentRepository commentRepository;
-//    private final MailContentBuilder mailContentBuilder;
-//    private final MailService mailService;
+
 
     public void save(CommentsDto commentsDto) {
         Post post = postRepository.findById(commentsDto.getPostId()).orElseThrow(() -> new SpringException(commentsDto.getPostId().toString()));
-//        User user = authService.getCurrentUser();
-//        Comment comment = map(commentsDto, post, authService.getCurrentUser());
-        Comment comment = map(commentsDto, post);
+        Comment comment = map(commentsDto, post, authService.getCurrentUser());
         commentRepository.save(comment);
     }
 
-    private Comment map(CommentsDto commentsDto, Post post) {
+    private Comment map(CommentsDto commentsDto, Post post,User currentUser) {
         return Comment.builder()
                 .text(commentsDto.getText())
                 .createdDate(Instant.now())
                 .post(post)
-//                .user(currentUser)
+                .user(currentUser)
                 .build();
     }
 

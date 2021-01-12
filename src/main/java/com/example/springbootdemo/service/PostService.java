@@ -38,17 +38,18 @@ public class PostService {
     public void save(PostRequest postRequest) {
         Subreddit subreddit = subredditRepository.findByName(postRequest.getSubredditName())
                 .orElseThrow(() -> new SpringException(postRequest.getSubredditName()));
-//        postRepository.save(map(postRequest, subreddit, authService.getCurrentUser()));
-        postRepository.save(map(postRequest, subreddit));
+        postRepository.save(map(postRequest, subreddit, authService.getCurrentUser()));
     }
 
-    private Post map(PostRequest postRequest, Subreddit subreddit) {
+    private Post map(PostRequest postRequest, Subreddit subreddit,User user) {
         return Post.builder()
                 .createdDate(Instant.now())
+                .url(postRequest.getUrl())
+                .postName(postRequest.getPostName())
                 .description(postRequest.getDescription())
                 .subreddit(subreddit)
                 .voteCount(0)
-//                .user(currentUser)
+                .user(user)
                 .build();
     }
 
@@ -59,7 +60,7 @@ public class PostService {
                 .url(post.getUrl())
                 .postName(post.getPostName())
                 .subredditName(post.getSubreddit().getName())
-                .userName(post.getUser().getUsername())
+                .userName(post.getUser() != null ? post.getUser().getUsername() : "")
                 .commentCount(commentCount(post))
                 .duration(getDuration(post))
                 .upVote(isPostUpVoted(post))
@@ -87,7 +88,7 @@ public class PostService {
 
     private boolean checkVoteType(Post post, VoteType voteType) {
         if (authService.isLoggedIn()) {
-            Optional<Vote> voteForPostByUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post,authService.getCurrentUser());
+            Optional<Vote> voteForPostByUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser());
             return voteForPostByUser.filter(vote -> vote.getVoteType().equals(voteType))
                     .isPresent();
         }

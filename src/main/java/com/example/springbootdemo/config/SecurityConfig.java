@@ -34,13 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()   // premilAll() là ko cần xác thực
-                .antMatchers(HttpMethod.GET, "/api/subreddit").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/subreddit").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/post/").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/subreddit/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/post/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/comment").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
                         "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest().authenticated();  // tất cá các api khác phải xác thực trước khi thao tác
