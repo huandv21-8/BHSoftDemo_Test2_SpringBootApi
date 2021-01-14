@@ -2,6 +2,7 @@ package com.example.springbootdemo.security;
 
 import com.example.springbootdemo.exceptions.SpringException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -73,12 +74,14 @@ public class JwtProvider {
 
             return keyStore.getCertificate("springblog").getPublicKey();
         } catch (KeyStoreException e) {
-                throw new SpringException("Exception occured while retrieving public key from keystore", e);
+            throw new SpringException("Exception occured while retrieving public key from keystore", e);
         }
     }
 
     public boolean validateToken(String jwt) {
         parser().setSigningKey(getPublickey()).parseClaimsJws(jwt);
+//     parser().setSigningKey(getPublickey()).parseClaimsJws()
+//        System.out.println(jws);
         return true;
     }
 

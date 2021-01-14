@@ -30,8 +30,7 @@ public class VoteService {
         Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser());
 
         if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(voteDto.getVoteType())) {
-            throw new SpringException("You have already "
-                    + voteDto.getVoteType() + "'d for this post");
+            throw new SpringException("You have already " + voteDto.getVoteType() + "'d for this post");
         }
         if (UPVOTE.equals(voteDto.getVoteType())) {
             post.setVoteCount(post.getVoteCount() + 1);
