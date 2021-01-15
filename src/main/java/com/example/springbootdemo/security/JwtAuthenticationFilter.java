@@ -1,6 +1,7 @@
 package com.example.springbootdemo.security;
 
 import com.example.springbootdemo.service.UserDetailsServiceImpl;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtProvider jwtProvider;
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -43,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    private String getJwtFromRequest(@NotNull HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
         // Kiểm tra xem header Authorization có chứa thông tin jwt không
