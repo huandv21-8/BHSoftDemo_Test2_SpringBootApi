@@ -1,6 +1,7 @@
 package com.example.springbootdemo.service;
 
 import com.example.springbootdemo.dto.CommentsDto;
+import com.example.springbootdemo.dto.CommentsDtoDelete;
 import com.example.springbootdemo.exceptions.SpringException;
 import com.example.springbootdemo.model.Comment;
 import com.example.springbootdemo.model.Post;
@@ -52,6 +53,7 @@ public class CommentService {
 
     private CommentsDto mapToDto(Comment comment) {
         return CommentsDto.builder()
+                .id(comment.getId())
                 .userName(comment.getUser().getUsername())
                 .createdDate(comment.getCreatedDate())
                 .text(comment.getText())
@@ -67,5 +69,13 @@ public class CommentService {
                 .stream()
                 .map(this::mapToDto)
                 .collect(toList());
+    }
+
+    public void delete(CommentsDtoDelete commentsDtoDelete) {
+        if (commentsDtoDelete.getUsername().equals(authService.getCurrentUser().getUsername()) ){
+            commentRepository.deleteById(commentsDtoDelete.getCommentId());
+        }else {
+            System.out.println("chay vao day");
+        }
     }
 }

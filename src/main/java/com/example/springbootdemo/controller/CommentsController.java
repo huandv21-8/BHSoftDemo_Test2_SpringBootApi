@@ -1,6 +1,7 @@
 package com.example.springbootdemo.controller;
 
 import com.example.springbootdemo.dto.CommentsDto;
+import com.example.springbootdemo.dto.CommentsDtoDelete;
 import com.example.springbootdemo.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,12 @@ public class CommentsController {
         return ResponseEntity.status(OK)
                 .body(commentService.getAllCommentsForUser(userName));
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Void> deleteComment(@RequestBody CommentsDtoDelete commentsDtoDelete) {
+        commentService.delete(commentsDtoDelete);
+        return new ResponseEntity<>(CREATED);
+    }
+
 
 }

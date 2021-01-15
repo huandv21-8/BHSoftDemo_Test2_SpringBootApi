@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/subreddit/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/comment/delete").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
                         "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest().authenticated();  // tất cá các api khác phải xác thực trước khi thao tác
