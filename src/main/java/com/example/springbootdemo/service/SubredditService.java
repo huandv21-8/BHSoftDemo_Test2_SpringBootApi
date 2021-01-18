@@ -36,7 +36,7 @@ public class SubredditService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<SubredditDto> getAll() {
         return subredditRepository.findAll()
                .stream()

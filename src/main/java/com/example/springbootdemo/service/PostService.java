@@ -3,7 +3,7 @@ package com.example.springbootdemo.service;
 import com.example.springbootdemo.dto.PostRequest;
 import com.example.springbootdemo.dto.PostResponse;
 import com.example.springbootdemo.exceptions.SpringException;
-import com.example.springbootdemo.mapper.PostMapper;
+//import com.example.springbootdemo.mapper.PostMapper;
 import com.example.springbootdemo.model.*;
 import com.example.springbootdemo.repository.*;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @AllArgsConstructor
 @Slf4j
-@Transactional
+//@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
@@ -35,6 +35,7 @@ public class PostService {
     private final VoteRepository voteRepository;
 
 
+    @Transactional
     public void save(PostRequest postRequest) {
         Subreddit subreddit = subredditRepository.findByName(postRequest.getSubredditName())
                 .orElseThrow(() -> new SpringException(postRequest.getSubredditName()));
@@ -96,7 +97,7 @@ public class PostService {
     }
 
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new SpringException(id.toString()));
@@ -104,7 +105,7 @@ public class PostService {
     }
 
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts() {
         return postRepository.findAll()
                 .stream()
@@ -112,7 +113,7 @@ public class PostService {
                 .collect(toList());
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<PostResponse> getPostsBySubreddit(Long subredditId) {
         Subreddit subreddit = subredditRepository.findById(subredditId)
                 .orElseThrow(() -> new SpringException(subredditId.toString()));
@@ -120,7 +121,7 @@ public class PostService {
         return posts.stream().map(this::mapToDto).collect(toList());
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<PostResponse> getPostsByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
@@ -128,5 +129,18 @@ public class PostService {
                 .stream()
                 .map(this::mapToDto)
                 .collect(toList());
+    }
+
+    @Transactional
+    public boolean deletePost(Long id) {
+     PostResponse postResponse = getPost(id);
+      if (postResponse.getUserName().equals(authService.getCurrentUser().getUsername())) {
+
+//          commentRepository.removeAllByPostOrderByIdIdAsc(id);
+          postRepository.deleteById(id);
+          return true;
+      }else {
+          return false;
+      }
     }
 }

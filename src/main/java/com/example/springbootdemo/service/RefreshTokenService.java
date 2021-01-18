@@ -12,11 +12,12 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-@Transactional
+//@Transactional
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Transactional
     public RefreshToken generateRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(UUID.randomUUID().toString());

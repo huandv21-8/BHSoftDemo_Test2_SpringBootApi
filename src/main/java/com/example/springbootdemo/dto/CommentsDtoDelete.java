@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentsDtoDelete {
-    private long commentId;
+    private Long commentId;
     private String username;
 }

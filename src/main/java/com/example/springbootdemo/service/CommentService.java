@@ -12,6 +12,7 @@ import com.example.springbootdemo.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
 
+    @Transactional
     public void save(CommentsDto commentsDto) {
         Post post = postRepository.findById(commentsDto.getPostId()).orElseThrow(() -> new SpringException(commentsDto.getPostId().toString()));
         Comment comment = map(commentsDto, post, authService.getCurrentUser());
@@ -71,6 +73,7 @@ public class CommentService {
                 .collect(toList());
     }
 
+    @Transactional
     public void delete(CommentsDtoDelete commentsDtoDelete) {
         if (commentsDtoDelete.getUsername().equals(authService.getCurrentUser().getUsername()) ){
             commentRepository.deleteById(commentsDtoDelete.getCommentId());
